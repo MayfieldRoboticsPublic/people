@@ -170,16 +170,19 @@ ScanProcessor::ScanProcessor(const sensor_msgs::LaserScan& scan, ScanMask& mask_
   scan_ = scan;
 
   SampleSet* cluster = new SampleSet;
-
+  std::cout << "Num ranges: " << scan.ranges.size() << '\n';
   for (uint32_t i = 0; i < scan.ranges.size(); i++)
   {
+
     Sample* s = Sample::Extract(i, scan);
 
 
     if (s != NULL)
     {
+      std::cout << "Samples detected";
       if (!mask_.hasSample(s, mask_threshold))
       {
+        std::cout << "Mask has samples";
         cluster->insert(s);
       } else {
         std::cout << "Mask has no samples\n";
