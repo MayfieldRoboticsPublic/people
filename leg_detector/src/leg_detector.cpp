@@ -975,8 +975,7 @@ public:
         pos.covariance[7] = 0.0;
         pos.covariance[8] = 10000.0;
         pos.initialization = 0;
-  legs.push_back(pos);
-
+        legs.push_back(pos);
       }
 
       if (publish_leg_markers_){
@@ -1062,6 +1061,7 @@ public:
     array.header.stamp = ros::Time::now();
     if(publish_legs_){
       array.people = legs;
+      std::cout << "Number of legs: " << array.people.size() << '\n';
       leg_measurements_pub_.publish(array);
     }
     if(publish_people_){
