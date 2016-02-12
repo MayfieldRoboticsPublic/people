@@ -729,6 +729,7 @@ public:
          i != processor.getClusters().end();
          i++)
     {
+      std::cout << "Add candidate cluster\n";
       vector<float> f = calcLegFeatures(*i, *scan);
 
       for (int k = 0; k < feat_count_; k++)
@@ -1061,7 +1062,6 @@ public:
     array.header.stamp = ros::Time::now();
     if(publish_legs_){
       array.people = legs;
-      std::cout << "Number of legs: " << array.people.size() << '\n';
       leg_measurements_pub_.publish(array);
     }
     if(publish_people_){
