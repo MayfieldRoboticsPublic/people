@@ -835,7 +835,7 @@ public:
 
       list<SavedFeature*>::iterator closest = propagated.end();
       float closest_dist = max_track_jump_m;
-      std::cout << "Propogated size: " << propagated.size();
+
       for (list<SavedFeature*>::iterator pf_iter = propagated.begin();
            pf_iter != propagated.end();
            pf_iter++)
@@ -857,8 +857,7 @@ public:
 //          ROS_INFO("setting object ID seed");
 //          new_feature->object_id = "seed";
 //        }
-        saved_features_.insert(saved_features_.end(), new_feature);
-        std::cout << "Saved feature added\n";
+        saved_features_.insert(saved_features_.end(), new_feature)
       }
       // Add the candidate, the tracker and the distance to a match list
       else
@@ -872,7 +871,7 @@ public:
       multiset<MatchedFeature>::iterator matched_iter = matches.begin();
       bool found = false;
       list<SavedFeature*>::iterator pf_iter = propagated.begin();
-      std::cout << "Propaged2 size " << propagated.size() << '\n';
+
       while (pf_iter != propagated.end())
       {
         // update the tracker with this candidate
@@ -936,7 +935,7 @@ public:
         if (closest == propagated.end()) {
           list<SavedFeature *>::iterator new_saved = saved_features_.insert(saved_features_.end(),
                                                                             new SavedFeature(loc, tfl_));
-          std::cout << "Saved feature inserted\n";
+
         }
         else
           matches.insert(MatchedFeature(matched_iter->candidate_,*closest,closest_dist, matched_iter->probability_));
@@ -952,7 +951,7 @@ public:
     int i = 0;
     vector<people_msgs::PositionMeasurement> people;
     vector<people_msgs::PositionMeasurement> legs;
-    std::cout << "Number of features: " << saved_features_.size() << '\n';
+
     for (list<SavedFeature*>::iterator sf_iter = saved_features_.begin();
          sf_iter != saved_features_.end();
          sf_iter++,i++)
