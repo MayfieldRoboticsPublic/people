@@ -857,7 +857,7 @@ public:
 //          ROS_INFO("setting object ID seed");
 //          new_feature->object_id = "seed";
 //        }
-        saved_features_.insert(saved_features_.end(), new_feature)
+        saved_features_.insert(saved_features_.end(), new_feature);
       }
       // Add the candidate, the tracker and the distance to a match list
       else
