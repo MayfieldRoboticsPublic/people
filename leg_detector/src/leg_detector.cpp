@@ -729,7 +729,6 @@ public:
          i != processor.getClusters().end();
          i++)
     {
-      std::cout << "Add candidate cluster\n";
       vector<float> f = calcLegFeatures(*i, *scan);
 
       for (int k = 0; k < feat_count_; k++)
@@ -947,7 +946,7 @@ public:
     int i = 0;
     vector<people_msgs::PositionMeasurement> people;
     vector<people_msgs::PositionMeasurement> legs;
-
+    std::cout << "Number of features: " << saved_features_.size();
     for (list<SavedFeature*>::iterator sf_iter = saved_features_.begin();
          sf_iter != saved_features_.end();
          sf_iter++,i++)
