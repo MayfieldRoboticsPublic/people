@@ -725,7 +725,7 @@ public:
     // For each candidate, find the closest tracker (within threshold) and add to the match list
     // If no tracker is found, start a new one
     multiset<MatchedFeature> matches;
-    std::cout << "Cluster size = " << processor.getClusters().size() << '\n';
+
     for (list<SampleSet*>::iterator i = processor.getClusters().begin();
          i != processor.getClusters().end();
          i++)
