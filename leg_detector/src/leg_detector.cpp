@@ -989,7 +989,8 @@ public:
         m.header.frame_id = fixed_frame;
         m.ns = "LEGS";
         m.id = i;
-        m.type = m.SPHERE;
+        m.type = m.TEXT_VIEW_FACING;
+        m.text = (*sf_iter)->object_id;
         m.pose.position.x = (*sf_iter)->position_[0];
         m.pose.position.y = (*sf_iter)->position_[1];
         m.pose.position.z = (*sf_iter)->position_[2];
