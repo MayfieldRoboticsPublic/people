@@ -1011,10 +1011,17 @@ public:
 
       if (publish_people_ || publish_people_markers_){
         SavedFeature* other = (*sf_iter)->other;
+        double dx, dy, dz;
         if(other!=NULL && other<(*sf_iter)){
-          double dx = ((*sf_iter)->position_[0] + other->position_[0])/2,
-                 dy = ((*sf_iter)->position_[1] + other->position_[1])/2,
-                 dz = ((*sf_iter)->position_[2] + other->position_[2])/2;
+          dx = ((*sf_iter)->position_[0] + other->position_[0])/2;
+          dy = ((*sf_iter)->position_[1] + other->position_[1])/2;
+          dz = ((*sf_iter)->position_[2] + other->position_[2])/2;
+        }
+        else {
+          dx = (*sf_iter)->position_[0];
+          dy = (*sf_iter)->position_[1];
+          dz = (*sf_iter)->position_[2];
+        }
 
           if (publish_people_){
             reliability = reliability * other->reliability;
@@ -1059,7 +1066,7 @@ public:
 
             markers_pub_.publish(m);
           }
-        }
+        
       }
     }
 
