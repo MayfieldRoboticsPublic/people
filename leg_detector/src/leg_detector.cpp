@@ -1024,12 +1024,19 @@ public:
         }
 
           if (publish_people_){
-            reliability = reliability * other->reliability;
+            if(other != NULL) {
+              reliability = reliability * other->reliability;
+            }
             people_msgs::PositionMeasurement pos;
             pos.header.stamp = (*sf_iter)->time_;
             pos.header.frame_id = fixed_frame;
-            pos.name = (*sf_iter)->object_id;;
-            pos.object_id = (*sf_iter)->id_ + "|" + other->id_;
+            pos.name = (*sf_iter)->object_id;
+            if(other != NULL) {
+              pos.object_id = (*sf_iter)->id_ + "|" + other->id_;
+            } 
+            else {
+              pos.object_id = (*sf_iter)->id_;
+            }
             pos.pos.x = dx;
             pos.pos.y = dy;
             pos.pos.z = dz;
@@ -1053,7 +1060,13 @@ public:
             m.header.frame_id = fixed_frame;
             m.ns = "PEOPLE";
             m.id = i;
-            m.type = m.SPHERE;
+            m.type = m.TEXT_VIEW_FACING;
+            if(other != NULL){
+              m.text = (*sf_iter)->id_ + "|" + other->id_;
+            }
+            else {
+              m.text = (*sf_iter)->id_;
+            }
             m.pose.position.x = dx;
             m.pose.position.y = dy;
             m.pose.position.z = dz;
