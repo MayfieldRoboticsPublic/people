@@ -242,14 +242,14 @@ void ScanProcessor::removeLargeChunks(SampleSet* cluster)
         float dx = cx - px;
         float dy = cy - py;
 
-        if(sqrt(dx*dx + dy*dy) > 0.06) {
+        if(sqrt(dx*dx + dy*dy) > 0.1) {
           break;
         }
         chunk_iter++;
         chunk_size++;
     }
 
-    if(chunk_size > 6) {
+    if(chunk_size > 10) {
       cluster->erase(c_iter, chunk_iter);
     }
     c_iter = chunk_iter;
