@@ -138,6 +138,8 @@ namespace laser_processor
 
     ~ScanProcessor();
 
+    void removeLargeChunks(SampleSet* cluster);
+
     void removeLessThan(uint32_t num);
 
     void splitConnected(float thresh);

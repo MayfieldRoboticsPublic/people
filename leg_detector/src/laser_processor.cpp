@@ -171,21 +171,28 @@ ScanProcessor::ScanProcessor(const sensor_msgs::LaserScan& scan, ScanMask& mask_
 
   SampleSet* cluster = new SampleSet;
 
+
   for (uint32_t i = 0; i < scan.ranges.size(); i++)
   {
+
     Sample* s = Sample::Extract(i, scan);
+
 
     if (s != NULL)
     {
+
       if (!mask_.hasSample(s, mask_threshold))
       {
+
         cluster->insert(s);
       } else {
+
         delete s;
       }
     }
-  }
 
+  }
+  removeLargeChunks(cluster);
   clusters_.push_back(cluster);
 
 }
@@ -214,6 +221,41 @@ ScanProcessor::removeLessThan(uint32_t num)
   }
 }
 
+void ScanProcessor::removeLargeChunks(SampleSet* cluster)
+{
+  SampleSet::iterator c_iter = cluster->begin();
+  while(c_iter != cluster->end())
+  {
+    //Find length of continuous chunk starting from this point
+    SampleSet::iterator chunk_iter = c_iter;
+    chunk_iter++;
+    int chunk_size = 1;
+    while(chunk_iter != cluster->end()){
+        float cx = (*chunk_iter)->x;
+        float cy = (*chunk_iter)->y;
+        SampleSet::iterator prev_chunk_iter = chunk_iter;
+        prev_chunk_iter--;
+
+        float px = (*prev_chunk_iter)->x;
+        float py = (*prev_chunk_iter)->y;
+
+        float dx = cx - px;
+        float dy = cy - py;
+
+        if(sqrt(dx*dx + dy*dy) > 0.1) {
+          break;
+        }
+        chunk_iter++;
+        chunk_size++;
+    }
+
+    if(chunk_size > 10) {
+      cluster->erase(c_iter, chunk_iter);
+    }
+    c_iter = chunk_iter;
+
+  }
+}
 
 void
 ScanProcessor::splitConnected(float thresh)
@@ -241,7 +283,7 @@ ScanProcessor::splitConnected(float thresh)
       list<Sample*>::iterator s_q = sample_queue.begin();
       while (s_q != sample_queue.end())
       {
-        int expand = (int)(asin( thresh / (*s_q)->range ) / scan_.angle_increment);
+        int expand = abs((int)(asin( thresh / (*s_q)->range ) / scan_.angle_increment));
 
         SampleSet::iterator s_rest = (*c_iter)->begin();
 
