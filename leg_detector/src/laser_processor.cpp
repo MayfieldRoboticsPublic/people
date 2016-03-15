@@ -192,9 +192,7 @@ ScanProcessor::ScanProcessor(const sensor_msgs::LaserScan& scan, ScanMask& mask_
     }
 
   }
-
   removeLargeChunks(cluster);
-  std::cout << "Scan Size: " << cluster->size() << '\n';
   clusters_.push_back(cluster);
 
 }
@@ -247,20 +245,14 @@ void ScanProcessor::removeLargeChunks(SampleSet* cluster)
         if(sqrt(dx*dx + dy*dy) > 0.06) {
           break;
         }
-
+        chunk_iter++;
         chunk_size++;
     }
 
-    if(chunk_size > 4) {
-      while(c_iter != chunk_iter){
-        SampleSet::iterator erase_iter = c_iter;
-        c_iter++;
-        cluster->erase(erase_iter);
-      }
+    if(chunk_size > 6) {
+      cluster->erase(c_iter, chunk_iter);
     }
-    else {
-      c_iter = chunk_iter;
-    }
+    c_iter = chunk_iter;
 
   }
 }
