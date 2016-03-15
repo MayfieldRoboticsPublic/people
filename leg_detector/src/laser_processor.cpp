@@ -190,12 +190,11 @@ ScanProcessor::ScanProcessor(const sensor_msgs::LaserScan& scan, ScanMask& mask_
         delete s;
       }
     }
-    else {
 
-    }
   }
 
   removeLargeChunks(cluster);
+  std::cout << "Scan Size: " << cluster->size() << '\n';
   clusters_.push_back(cluster);
 
 }
