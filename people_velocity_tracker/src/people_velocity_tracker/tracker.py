@@ -90,7 +90,7 @@ class VelocityTracker:
         self.sub  = rospy.Subscriber('/people_tracker_measurements', PositionMeasurementArray, self.pm_cb)
         self.mpub = rospy.Publisher('/visualization_marker', Marker)
         self.ppub = rospy.Publisher('/people', People)
-        self.people_cb = None
+        self.people_cb = cb
 
     def pm_cb(self, msg):
         for pm in msg.people:
@@ -131,9 +131,6 @@ class VelocityTracker:
             pl.people.append( person )
 
         self.ppub.publish(pl)
-        if people_cb != None:
-            people_cb(pl)
+        if self.people_cb != None:
+            self.people_cb(pl)
 
-rospy.init_node("people_velocity_tracker")
-vt = VelocityTracker()
-vt.spin()

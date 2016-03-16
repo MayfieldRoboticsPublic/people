@@ -7,7 +7,7 @@ d = generate_distutils_setup(
    ##  don't do this unless you want a globally visible script
    # scripts=['bin/myscript'], 
    packages=['people_velocity_tracker'],
-   package_dir={'people_velocity_tracker': 'src'}
+   package_dir={'': 'src'}
 )
 
 setup(**d)
