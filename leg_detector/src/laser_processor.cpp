@@ -192,7 +192,7 @@ ScanProcessor::ScanProcessor(const sensor_msgs::LaserScan& scan, ScanMask& mask_
     }
 
   }
-  removeLargeChunks(cluster);
+  //removeLargeChunks(cluster);
   clusters_.push_back(cluster);
 
 }
