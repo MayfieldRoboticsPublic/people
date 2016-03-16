@@ -8,4 +8,6 @@ find_package(catkin REQUIRED COMPONENTS
   people_msgs
 )
 
+catkin_python_setup()
+
 
