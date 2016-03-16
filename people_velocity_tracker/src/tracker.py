@@ -9,8 +9,8 @@ from easy_markers.generator import *
 from kalman_filter import Kalman
 
 def distance(leg1, leg2):
-    return math.sqrt(math.pow(leg1.x-leg2.x,2) + 
-                     math.pow(leg1.y-leg2.y,2) + 
+    return math.sqrt(math.pow(leg1.x-leg2.x,2) +
+                     math.pow(leg1.y-leg2.y,2) +
                      math.pow(leg1.z-leg2.z,2))
 
 def average(leg1, leg2):
@@ -50,7 +50,7 @@ class PersonEstimate:
         time = (self.pos.header.stamp - last.header.stamp).to_sec()
         if time != 0:
            scale(ivel, 1.0/time)
-            
+
            self.k.update([ivel.x, ivel.y, ivel.z])
 
     def age(self):
@@ -84,12 +84,13 @@ class PersonEstimate:
         return self.pos.header.frame_id, p
 
 class VelocityTracker:
-    def __init__(self):
+    def __init__(self, cb=None):
         self.people = {}
         self.TIMEOUT = rospy.Duration( rospy.get_param('~timeout',          1.0) )
         self.sub  = rospy.Subscriber('/people_tracker_measurements', PositionMeasurementArray, self.pm_cb)
         self.mpub = rospy.Publisher('/visualization_marker', Marker)
         self.ppub = rospy.Publisher('/people', People)
+        self.people_cb = None
 
     def pm_cb(self, msg):
         for pm in msg.people:
@@ -111,18 +112,27 @@ class VelocityTracker:
             self.publish()
             rate.sleep()
 
-    def publish(self):        
+    def spinOnce(self):
+        now = rospy.Time.now()
+        for p in self.people.values():
+            if now - p.age() > self.TIMEOUT:
+                del self.people[p.id()]
+        self.publish()
+
+    def publish(self):
         gen.counter = 0
         pl = People()
         pl.header.frame_id = None
-        
+
         for p in self.people.values():
             p.publish_markers(self.mpub)
             frame, person = p.get_person()
             pl.header.frame_id = frame
             pl.people.append( person )
-            
+
         self.ppub.publish(pl)
+        if people_cb != None:
+            people_cb(pl)
 
 rospy.init_node("people_velocity_tracker")
 vt = VelocityTracker()
