@@ -18,6 +18,7 @@
   <run_depend>people_msgs</run_depend>
   <run_depend>rospy</run_depend>
   <run_depend>easy_markers</run_depend>
+  <run_depend>kalman_filter</run_depend>
 
 </package>
 
