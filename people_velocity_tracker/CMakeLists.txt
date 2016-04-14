@@ -11,4 +11,3 @@ find_package(catkin REQUIRED COMPONENTS
 install(DIRECTORY launch/
     DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/launch
 )
-
