@@ -39,6 +39,10 @@ include_directories(
   include ${catkin_INCLUDE_DIRS}
 )
 
+catkin_package(
+    INCLUDE_DIRS include
+)
+
 ## Declare a cpp executable
 add_executable(leg_detector 
                src/laser_processor.cpp
