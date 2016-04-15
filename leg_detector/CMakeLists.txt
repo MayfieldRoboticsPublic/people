@@ -39,6 +39,8 @@ include_directories(
   include ${catkin_INCLUDE_DIRS}
 )
 
+catkin_package()
+
 ## Declare a cpp executable
 add_executable(leg_detector 
                src/laser_processor.cpp
@@ -51,4 +53,18 @@ add_dependencies(leg_detector people_msgs_gencpp ${${PROJECT_NAME}_EXPORTED_TARG
 ## Specify libraries to link a library or executable target against
 target_link_libraries(leg_detector
    ${catkin_LIBRARIES} ${BFL_LIBRARIES} ${BULLET_LIBRARIES}
+)
+
+install(TARGETS leg_detector
+    ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
+    LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
+    RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+)
+
+install(DIRECTORY config
+    DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
+)
+
+install(DIRECTORY launch
+    DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
 )
