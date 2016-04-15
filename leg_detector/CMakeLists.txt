@@ -39,9 +39,7 @@ include_directories(
   include ${catkin_INCLUDE_DIRS}
 )
 
-catkin_package(
-    INCLUDE_DIRS include
-)
+catkin_package()
 
 ## Declare a cpp executable
 add_executable(leg_detector 
@@ -63,14 +61,10 @@ install(TARGETS leg_detector
     RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 
-install(DIRECTORY config/
-    DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/config
+install(DIRECTORY config
+    DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
 )
 
-install(DIRECTORY launch/
-    DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/launch
-)
-
-install(DIRECTORY include/
-    DESTINATION ${CATKIN_PACKAGE_INCLUDE_DESTINATION}
+install(DIRECTORY launch
+    DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
 )
