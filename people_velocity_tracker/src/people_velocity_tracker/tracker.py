@@ -93,6 +93,12 @@ class VelocityTracker:
         self.people_cb = cb
 
     def pm_cb(self, msg):
+        # cleanup people that are not tracked anymore
+        tracked_ids = [x.object_id for x in msg.people]
+        for pid in list(self.people.keys()):
+            if pid not in tracked_ids:
+                del self.people[pid]
+
         for pm in msg.people:
             if pm.object_id:
                 if pm.object_id in self.people:
