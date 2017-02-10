@@ -239,7 +239,7 @@ public:
 
   int mask_count_;
 
-  CvRTrees forest;
+  cv::Ptr<cv::ml::RTrees> forest;
 
   float connected_thresh_;
 
@@ -282,11 +282,11 @@ public:
     laser_notifier_(laser_sub_,tfl_,fixed_frame,10)
   {
     if (g_argc > 1) {
-      forest.load(g_argv[1]);
-      feat_count_ = forest.get_active_var_mask()->cols;
-      printf("Loaded forest with %d features: %s\n", feat_count_, g_argv[1]);
+      forest = cv::ml::RTrees::load<cv::ml::RTrees>(g_argv[1]);
+      feat_count_ = forest->getActiveVarCount();
+      printf("Loaded forest->with %d features: %s\n", feat_count_, g_argv[1]);
     } else {
-      printf("Please provide a trained random forests classifier as an input.\n");
+      printf("Please provide a trained random forest-> classifier as an input.\n");
       shutdown();
     }
 
@@ -692,7 +692,7 @@ public:
     processor.splitConnected(connected_thresh_);
     processor.removeLessThan(min_points_per_group);
 
-    CvMat* tmp_mat = cvCreateMat(1,feat_count_,CV_32FC1);
+    cv::Mat tmp_mat(1,feat_count_,CV_32FC1);
 
     // if no measurement matches to a tracker in the last <no_observation_timeout>  seconds: erase tracker
     ros::Time purge = scan->header.stamp + ros::Duration().fromSec(-no_observation_timeout_s);
@@ -733,9 +733,9 @@ public:
       vector<float> f = calcLegFeatures(*i, *scan);
 
       for (int k = 0; k < feat_count_; k++)
-        tmp_mat->data.fl[k] = (float)(f[k]);
+        tmp_mat.at<float>(1, k) = (float)(f[k]);
 
-      float probability = forest.predict_prob( tmp_mat );
+      float probability = forest->predict( tmp_mat );
       Stamped<Point> loca((*i)->center(), scan->header.stamp, scan->header.frame_id);
       try {
         tfl_.transformPoint(fixed_frame, loca, loca);
@@ -943,7 +943,6 @@ public:
       }
     }
 
-    cvReleaseMat(&tmp_mat); tmp_mat = 0;
     if(!use_seeds_)
       pairLegs();
 
